@@ -13,5 +13,10 @@
     <string name="question_place">Beijing is the biggest city in China??</string>
     
     <string name="question_asia"><b>Beijing </b>is the biggest city in the world \'s oldest cities??</string>
+    
+    <string name="cheat_button">Cheat!</string>
+    <string name="warning_text">Are you sure you want to do this?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="judgment_toast">Cheating is wrong.</string>
         
 </resources>

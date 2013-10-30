@@ -1,6 +1,10 @@
 package cs.androidfun.geoquiz;
 
+import cs.androidfun.geoquiz.CheatActivity;
+import cs.androidfun.geoquiz.QuizActivity;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +22,7 @@ public class QuizActivity extends Activity {
 	private Button mFalseButton;
 	private Button mNextButton;
 	private TextView mQuestionTextView;
+	private Button mCheatButton;
 	
 	private TrueFalse[] mQuestionBank = new TrueFalse[]{
 			new TrueFalse(R.string.question_oceans, true),
@@ -70,6 +75,20 @@ public class QuizActivity extends Activity {
         if(savedInstanceState != null){
         	mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
+        
+        mCheatButton=(Button)findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();
+				Intent i = new Intent(QuizActivity.this,CheatActivity.class);
+				i.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+				startActivity(i);
+			}
+		});
+        
         updateQuestion();
     }
     
@@ -79,8 +98,7 @@ public class QuizActivity extends Activity {
     	Log.i(TAG, "onSaveInstanceState");
     	savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
-    
-  
+      
     private void updateQuestion(){
     	int question = mQuestionBank[mCurrentIndex].getQuestion();
     	mQuestionTextView.setText(question);
