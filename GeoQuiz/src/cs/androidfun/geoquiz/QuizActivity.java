@@ -31,6 +31,9 @@ public class QuizActivity extends Activity {
 	};
 	
 	private int mCurrentIndex=0;
+	
+	private boolean mIsCheater;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,7 @@ public class QuizActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mCurrentIndex =(mCurrentIndex + 1) % mQuestionBank.length;
+				mIsCheater = false;
 				updateQuestion();
 			}
 		});
@@ -85,7 +89,8 @@ public class QuizActivity extends Activity {
 				boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();
 				Intent i = new Intent(QuizActivity.this,CheatActivity.class);
 				i.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, answerIsTrue);
-				startActivity(i);
+				//startActivity(i);
+				startActivityForResult(i, 0);
 			}
 		});
         
@@ -108,15 +113,26 @@ public class QuizActivity extends Activity {
     	boolean answerIsTrue= mQuestionBank[mCurrentIndex].isTrueQuestion();
     	
     	int messageResId= 0;
+    	if(mIsCheater){
+    		messageResId = R.string.judgment_toast;
+    	}else{
     	if(userPressedTrue == answerIsTrue){
     		messageResId = R.string.true_toast;    		
     	}else{
     		messageResId = R.string.false_toast;
     	}
+    	}
     	
     	Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    	if(data == null){
+    		return;
+    	}
+    	mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
+    }
     @Override
     public void onStart(){
     	super.onStart();
